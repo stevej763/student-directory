@@ -1,18 +1,3 @@
-
-# [
-#   {name: "Dr. Hannibal Lecter", cohort: :november},
-#   {name: "Darth Vader", cohort: :november},
-#   {name: "Nurse Ratched", cohort: :november},
-#   {name: "Michael Corleone", cohort: :november},
-#   {name: "Alex Delarge", cohort: :november},
-#   {name: "The Wicked Witch of the West", cohort: :november},
-#   {name: "Terminator", cohort: :november},
-#   {name: "Freddie Kruger", cohort: :november},
-#   {name: "The Joker", cohort: :november},
-#   {name: "Joffrey Baratheon", cohort: :november},
-#   {name: "Norman Bates", cohort: :november}
-# ]
-
 def input_students
   students = []
   
@@ -42,7 +27,7 @@ def get_max_length
   if max_length == "" ||  max_length == 0
     max_length = 99
   end
-  
+
   return max_length
 end
 
@@ -56,7 +41,7 @@ def print_student_names(max_length, filter, students)
     students = filter_student_names_beginning_with(filter, students)
   end
   students = filter_student_names_by_length(max_length, students)
-  print_all_student_names(students)
+  print_all_student_names_with_while_loop(students)
 end
 
 def print_all_student_names(students)
@@ -64,6 +49,16 @@ def print_all_student_names(students)
     puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
   end
 end
+
+def print_all_student_names_with_while_loop(students)
+  student_index = 0
+  while student_index < students.count
+    puts "#{student_index + 1}. #{students[student_index][:name]} (#{students[student_index][:cohort]} cohort)"
+    student_index += 1
+  end
+end
+
+
 
 def filter_student_names_beginning_with(filter, students)
   filtered_students = students.select {|student| 
