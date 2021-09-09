@@ -13,21 +13,6 @@
 #   {name: "Norman Bates", cohort: :november}
 # ]
 
-def print_header
-  puts "The students of Villains Academy"
-  puts "----------"
-end
-
-def print_student_names(students)
-  students.each do |student|
-    puts "#{student[:name]} (#{student[:cohort]} cohort)"
-  end
-end
-
-def print_footer(students)
-  puts "Overall, we have #{students.count} great students"
-end
-
 def input_students
   students = []
   
@@ -43,6 +28,22 @@ def input_students
   end
   return students
 end
+
+def print_header
+  puts "The students of Villains Academy"
+  puts "----------"
+end
+
+def print_student_names(students)
+  students.each_with_index do |student, index|
+    puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
+  end
+end
+
+def print_footer(students)
+  puts "Overall, we have #{students.count} great students"
+end
+
 
 students = input_students
 print_header
