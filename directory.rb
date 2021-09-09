@@ -31,9 +31,19 @@ end
 
 def get_filter
   letter = ""
-  puts "Enter a letter to filter, otherwise press enter"
+  puts "Enter a letter to filter, otherwise press enter:"
   letter = gets.chomp
   return letter.upcase
+end
+
+def get_max_length
+  puts "Enter a maximum length for student names in the list:"
+  max_length = gets.chomp.to_i
+  if max_length == "" ||  max_length == 0
+    max_length = 99
+  end
+  
+  return max_length
 end
 
 def print_header
@@ -41,12 +51,12 @@ def print_header
   puts "----------"
 end
 
-def print_student_names(filter, students)
+def print_student_names(max_length, filter, students)
   if filter.length == 1 
-    return print_student_names_beginning_with(filter, students)
+    students = filter_student_names_beginning_with(filter, students)
   end
+  students = filter_student_names_by_length(max_length, students)
   print_all_student_names(students)
-
 end
 
 def print_all_student_names(students)
@@ -55,9 +65,18 @@ def print_all_student_names(students)
   end
 end
 
-def print_student_names_beginning_with(filter, students)
-  filtered_students = students.select{|student| student[:name].chars.first.upcase == filter}
-  print_all_student_names(filtered_students)
+def filter_student_names_beginning_with(filter, students)
+  filtered_students = students.select {|student| 
+    student[:name].chars.first.upcase == filter
+  }
+  return filtered_students
+end
+
+def filter_student_names_by_length(max_length, students)
+  filtered_students = students.select {|student| 
+    student[:name].length <= max_length
+  } 
+  return filtered_students
 end
 
 def print_footer(students)
@@ -66,7 +85,8 @@ end
 
 
 students = input_students
-filter = get_filter
+letter_filter = get_filter
+max_length = get_max_length
 print_header
-print_student_names(filter, students)
+print_student_names(max_length, letter_filter, students)
 print_footer(students)
