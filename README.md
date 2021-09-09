@@ -4,4 +4,5 @@ Welcome to the student directory for Villains Academy. Use this to manage the li
 
 ## How to use:
 
+Simply run:  
 `ruby directory.rb`
