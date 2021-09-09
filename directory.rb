@@ -6,9 +6,7 @@ def display_centered_text_with_symbol(text, symbol)
   puts text.center(50, symbol)
 end
 
-def input_students
-  students = []
-  
+def display_intro
   puts
   display_centered_text_with_symbol("", "*")
   display_centered_text("VILLAINS ACADEMY STUDENT DIRECTORY")
@@ -18,19 +16,46 @@ def input_students
   display_centered_text("Please enter the names of the students")
   display_centered_text("you wish to register")
   display_centered_text_with_symbol("", ".")
-  display_centered_text("To finish, just hit return twice")
+  display_centered_text("To finish, press option 2")
   display_centered_text_with_symbol("", ".")
   display_centered_text_with_symbol("", " ")
-  print "Student Name:"
-  name = gets.chomp
+end
 
-  while !name.empty? do
-    students << {name: name, age: 12, height: 165, cohort: :november, hobbies: ["Fishing", "Sky Diving", "Running"]}
+def get_input(instruction)
+  response = ""
+  while response == ""
+    print instruction
+    response = gets.chomp
+  end
+  return response
+end
+
+def get_student_details
+  name = get_input("Student Name:")
+  age = get_input("Student age:").to_i
+  height = get_input("Student height:").to_f
+  cohort = get_input("Student cohort:")
+  hobbies = get_input("List of hobbies:")
+  student = {name: name, age: age, height: height, cohort: cohort.to_sym, hobbies: hobbies}
+  return student
+end
+
+def input_students
+  should_exit = false
+  students = []
+  display_intro
+  loop do
+    puts "Enter the corresponding number for the command"
+    puts "1. Add new student"
+    puts "2. Exit student creation"
+
+    gets.chomp.to_i == 2 ? break : nil
+
+    new_student = get_student_details
+    students << new_student
     puts
     display_centered_text("There are now #{students.count} registered students")
     puts
-    print "Student Name:"
-    name = gets.chomp
   end
   return students
 end
@@ -67,14 +92,14 @@ end
 
 def print_all_student_names(students)
   students.each_with_index do |student, index|
-    puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
+    puts "#{index + 1}. name:#{student[:name]} age:#{student[:age]} (#{student[:cohort]} cohort)"
   end
 end
 
 def print_all_student_names_with_while_loop(students)
   student_index = 0
   while student_index < students.count
-    puts "#{student_index + 1}. #{students[student_index][:name]}, height: #{students[student_index][:height]} (#{students[student_index][:cohort]} cohort)"
+    puts "#{student_index + 1}. #{students[student_index][:name]} age:#{student[:age]} height: #{students[student_index][:height]} (#{students[student_index][:cohort]} cohort)"
     student_index += 1
   end
 end
