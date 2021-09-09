@@ -33,7 +33,7 @@ def get_filter
   letter = ""
   puts "Enter a letter to filter, otherwise press enter"
   letter = gets.chomp
-  return letter
+  return letter.upcase
 end
 
 def print_header
@@ -56,7 +56,7 @@ def print_all_student_names(students)
 end
 
 def print_student_names_beginning_with(filter, students)
-  filtered_students = students.select{|student| student[:name].chars.first == filter}
+  filtered_students = students.select{|student| student[:name].chars.first.upcase == filter}
   print_all_student_names(filtered_students)
 end
 
@@ -67,7 +67,6 @@ end
 
 students = input_students
 filter = get_filter
-puts "The filter is #{filter}"
 print_header
 print_student_names(filter, students)
 print_footer(students)
