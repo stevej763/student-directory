@@ -21,6 +21,14 @@ def display_intro
   display_centered_text_with_symbol("", " ")
 end
 
+def request_order_by_cohort
+  display_centered_text("Order By Cohort?")
+  puts "1. Yes"
+  puts "2. No"
+  response = gets.chomp
+  return response
+end
+
 def get_input(instruction)
   response = ""
   while response == ""
@@ -47,7 +55,7 @@ def input_students
   loop do
     puts "Enter the corresponding number for the command"
     puts "1. Add new student"
-    puts "2. Exit student creation"
+    puts "2. Show student list"
 
     gets.chomp.to_i == 2 ? break : nil
 
@@ -78,17 +86,43 @@ def get_max_length
 end
 
 def print_header
-  puts "The students of Villains Academy"
-  puts "-----------------".center(20)
+  display_centered_text("The students of Villains Academy")
+  display_centered_text("-----------------")
 end
 
-def print_student_names(max_length, filter, students)
-  if filter.length == 1 
+def print_student_names(order_by_cohort, max_length, filter, students)
+  if order_by_cohort
+    print_all_student_names_by_cohort(students)
+  elsif filter.length == 1 
     students = filter_student_names_beginning_with(filter, students)
+    students = filter_student_names_by_length(max_length, students)
+    print_all_student_names_with_while_loop(students)
   end
-  students = filter_student_names_by_length(max_length, students)
-  print_all_student_names_with_while_loop(students)
 end
+
+def print_all_student_names_by_cohort(students)
+  cohorts = {}
+  students.each do |student|
+    name = student[:name]
+    cohort = student[:cohort]
+    if cohorts[cohort] == nil
+      cohorts[cohort] = [name]
+    else
+      cohorts[cohort] << name
+    end
+  end
+  format_and_display_student_names_by_cohort(cohorts)
+end
+
+def format_and_display_student_names_by_cohort(cohorts)
+  cohorts.each do |cohort, students|
+    display_centered_text("#{cohort} cohort: ")
+    students.each do |student|
+      puts student
+    end
+  end
+end
+
 
 def print_all_student_names(students)
   students.each_with_index do |student, index|
@@ -119,13 +153,14 @@ def filter_student_names_by_length(max_length, students)
 end
 
 def print_footer(students)
-  puts "Overall, we have #{students.count} great students"
+  display_centered_text("Overall, we have #{students.count} great students")
 end
 
 
 students = input_students
+order_by_cohort = request_order_by_cohort
 letter_filter = get_filter
 max_length = get_max_length
 print_header
-print_student_names(max_length, letter_filter, students)
+print_student_names(order_by_cohort, max_length, letter_filter, students)
 print_footer(students)
