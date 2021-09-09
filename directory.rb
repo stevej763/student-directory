@@ -71,7 +71,7 @@ end
 def get_filter
   letter = ""
   puts "Enter a letter to filter, otherwise press enter:"
-  letter = gets.chomp
+  letter = gets.strip
   return letter.upcase
 end
 
