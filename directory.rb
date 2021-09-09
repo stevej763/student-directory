@@ -1,14 +1,35 @@
+def display_centered_text(text)
+  display_centered_text_with_symbol(text, "-")
+end
+
+def display_centered_text_with_symbol(text, symbol)
+  puts text.center(50, symbol)
+end
+
 def input_students
   students = []
   
-  puts "Please enter the names of the students"
-  puts "To finish, just hit return twice"
-
+  puts
+  display_centered_text_with_symbol("", "*")
+  display_centered_text("VILLAINS ACADEMY STUDENT DIRECTORY")
+  display_centered_text_with_symbol("", "*")
+  puts
+  display_centered_text_with_symbol("", ".")
+  display_centered_text("Please enter the names of the students")
+  display_centered_text("you wish to register")
+  display_centered_text_with_symbol("", ".")
+  display_centered_text("To finish, just hit return twice")
+  display_centered_text_with_symbol("", ".")
+  display_centered_text_with_symbol("", " ")
+  print "Student Name:"
   name = gets.chomp
 
   while !name.empty? do
-    students << {name: name, cohort: :november}
-    puts "Now we have #{students.count} students"
+    students << {name: name, age: 12, height: 165, cohort: :november, hobbies: ["Fishing", "Sky Diving", "Running"]}
+    puts
+    display_centered_text("There are now #{students.count} registered students")
+    puts
+    print "Student Name:"
     name = gets.chomp
   end
   return students
@@ -33,7 +54,7 @@ end
 
 def print_header
   puts "The students of Villains Academy"
-  puts "----------"
+  puts "-----------------".center(20)
 end
 
 def print_student_names(max_length, filter, students)
@@ -53,12 +74,10 @@ end
 def print_all_student_names_with_while_loop(students)
   student_index = 0
   while student_index < students.count
-    puts "#{student_index + 1}. #{students[student_index][:name]} (#{students[student_index][:cohort]} cohort)"
+    puts "#{student_index + 1}. #{students[student_index][:name]}, height: #{students[student_index][:height]} (#{students[student_index][:cohort]} cohort)"
     student_index += 1
   end
 end
-
-
 
 def filter_student_names_beginning_with(filter, students)
   filtered_students = students.select {|student| 
