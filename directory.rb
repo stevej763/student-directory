@@ -116,7 +116,7 @@ end
 
 def format_and_display_student_names_by_cohort(cohorts)
   cohorts.each do |cohort, students|
-    display_centered_text("#{cohort} cohort: ")
+    display_centered_text("#{cohort} cohort")
     students.each do |student|
       puts student
     end
@@ -153,7 +153,11 @@ def filter_student_names_by_length(max_length, students)
 end
 
 def print_footer(students)
-  display_centered_text("Overall, we have #{students.count} great students")
+  if students.length == 1
+    display_centered_text("Overall, we have #{students.count} great student")
+  else
+    display_centered_text("Overall, we have #{students.count} great students")
+  end
 end
 
 
