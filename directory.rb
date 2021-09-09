@@ -29,15 +29,35 @@ def input_students
   return students
 end
 
+def get_filter
+  letter = ""
+  puts "Enter a letter to filter, otherwise press enter"
+  letter = gets.chomp
+  return letter
+end
+
 def print_header
   puts "The students of Villains Academy"
   puts "----------"
 end
 
-def print_student_names(students)
+def print_student_names(filter, students)
+  if filter.length == 1 
+    return print_student_names_beginning_with(filter, students)
+  end
+  print_all_student_names(students)
+
+end
+
+def print_all_student_names(students)
   students.each_with_index do |student, index|
     puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
   end
+end
+
+def print_student_names_beginning_with(filter, students)
+  filtered_students = students.select{|student| student[:name].chars.first == filter}
+  print_all_student_names(filtered_students)
 end
 
 def print_footer(students)
@@ -46,6 +66,8 @@ end
 
 
 students = input_students
+filter = get_filter
+puts "The filter is #{filter}"
 print_header
-print_student_names(students)
+print_student_names(filter, students)
 print_footer(students)
