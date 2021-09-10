@@ -30,6 +30,16 @@ def save_students(students)
   file.close
 end
 
+def load_students
+  students = []
+  file = File.open("students.csv", "r")
+  file.readlines.each do |line|
+    name, age, height, cohort = line.chomp.split(",")
+    students << {name: name, age: age.to_i, height: height.to_f, cohort: cohort.to_sym}
+  end
+  file.close
+  return students
+end
 
 def request_order_by_cohort
   display_centered_text("Order By Cohort?")
@@ -123,7 +133,7 @@ end
 def print_all_student_names_with_while_loop(students)
   student_index = 0
   while student_index < students.count
-    puts "#{student_index + 1}. #{students[student_index][:age]} height: #{students[student_index][:height]} (#{students[student_index][:cohort]} cohort)"
+    puts "#{student_index + 1}. #{students[student_index][:name]} age: #{students[student_index][:age]} height: #{students[student_index][:height]} (#{students[student_index][:cohort]} cohort)"
     student_index += 1
   end
 end
@@ -155,6 +165,7 @@ def print_menu_options
   puts "1. Add new student"
   puts "2. Show student list"
   puts "3. Save the list to students.csv"
+  puts "4. Load students from csv"
   puts "9. Exit"
 end
 
@@ -194,6 +205,9 @@ def interactive_menu
         show_student_list(students)
       when "3"
         save_students(students)
+      when "4"
+        saved_students = load_students
+        students += saved_students
       when "9"
         exit
       else
