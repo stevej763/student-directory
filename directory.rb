@@ -13,10 +13,9 @@ def display_intro
   display_centered_text_with_symbol("", "*")
   puts
   display_centered_text_with_symbol("", ".")
-  display_centered_text("Please enter the names of the students")
-  display_centered_text("you wish to register")
+  display_centered_text("Please follow the instructions on screen")
   display_centered_text_with_symbol("", ".")
-  display_centered_text("To finish, press option 2")
+  display_centered_text("To exit, press option 9")
   display_centered_text_with_symbol("", ".")
   display_centered_text_with_symbol("", " ")
 end
@@ -26,7 +25,7 @@ def request_order_by_cohort
   puts "1. Yes"
   puts "2. No"
   response = gets.chomp
-  return response
+  return response == "1" ? true : false
 end
 
 def get_input(instruction)
@@ -46,26 +45,6 @@ def get_student_details
   hobbies = get_input("List of hobbies:")
   student = {name: name, age: age, height: height, cohort: cohort.to_sym, hobbies: hobbies}
   return student
-end
-
-def input_students
-  should_exit = false
-  students = []
-  display_intro
-  loop do
-    puts "Enter the corresponding number for the command"
-    puts "1. Add new student"
-    puts "2. Show student list"
-
-    gets.chomp.to_i == 2 ? break : nil
-
-    new_student = get_student_details
-    students << new_student
-    puts
-    display_centered_text("There are now #{students.count} registered students")
-    puts
-  end
-  return students
 end
 
 def get_filter
@@ -97,6 +76,8 @@ def print_student_names(order_by_cohort, max_length, filter, students)
     students = filter_student_names_beginning_with(filter, students)
     students = filter_student_names_by_length(max_length, students)
     print_all_student_names_with_while_loop(students)
+  else
+    print_all_student_names_with_while_loop(students)
   end
 end
 
@@ -123,7 +104,6 @@ def format_and_display_student_names_by_cohort(cohorts)
   end
 end
 
-
 def print_all_student_names(students)
   students.each_with_index do |student, index|
     puts "#{index + 1}. name:#{student[:name]} age:#{student[:age]} (#{student[:cohort]} cohort)"
@@ -133,7 +113,7 @@ end
 def print_all_student_names_with_while_loop(students)
   student_index = 0
   while student_index < students.count
-    puts "#{student_index + 1}. #{students[student_index][:name]} age:#{student[:age]} height: #{students[student_index][:height]} (#{students[student_index][:cohort]} cohort)"
+    puts "#{student_index + 1}. #{students[student_index][:age]} height: #{students[student_index][:height]} (#{students[student_index][:cohort]} cohort)"
     student_index += 1
   end
 end
@@ -160,11 +140,38 @@ def print_footer(students)
   end
 end
 
+def interactive_menu
+  students = []
+  display_intro
+  loop do
+    display_centered_text("Menu")
+    puts "1. Add new student"
+    puts "2. Show student list"
+    puts "9. Exit"
 
-students = input_students
-order_by_cohort = request_order_by_cohort
-letter_filter = get_filter
-max_length = get_max_length
-print_header
-print_student_names(order_by_cohort, max_length, letter_filter, students)
-print_footer(students)
+    selection = gets.chomp
+    case selection
+      when "1"
+        new_student = get_student_details
+        students << new_student
+        puts
+        display_centered_text("There are now #{students.count} registered students")
+        puts
+      when "2"
+        order_by_cohort = request_order_by_cohort
+        puts "order by cohort: #{order_by_cohort}"
+        letter_filter = get_filter
+        max_length = get_max_length
+        print_header
+        print_student_names(order_by_cohort, max_length, letter_filter, students)
+        print_footer(students)
+      when "9"
+        exit
+      else
+        puts "Unrecognised command"
+      end
+  end
+  return students
+end
+
+interactive_menu
