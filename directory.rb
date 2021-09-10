@@ -20,6 +20,17 @@ def display_intro
   display_centered_text_with_symbol("", " ")
 end
 
+def save_students(students)
+  file = File.open("students.csv", "w")
+  students.each do |student|
+    student_data = [student[:name], student[:age], student[:height], student[:cohort]]
+    csv_line = student_data.join(",")
+    file.puts csv_line
+  end
+  file.close
+end
+
+
 def request_order_by_cohort
   display_centered_text("Order By Cohort?")
   puts "1. Yes"
@@ -42,8 +53,7 @@ def get_student_details
   age = get_input("Student age:").to_i
   height = get_input("Student height:").to_f
   cohort = get_input("Student cohort:")
-  hobbies = get_input("List of hobbies:")
-  student = {name: name, age: age, height: height, cohort: cohort.to_sym, hobbies: hobbies}
+  student = {name: name, age: age, height: height, cohort: cohort.to_sym}
   return student
 end
 
@@ -144,6 +154,7 @@ def print_menu_options
   display_centered_text("Menu")
   puts "1. Add new student"
   puts "2. Show student list"
+  puts "3. Save the list to students.csv"
   puts "9. Exit"
 end
 
@@ -157,9 +168,15 @@ def show_student_list(students)
 end
 
 def display_student_count(students)
-  puts
-  display_centered_text("There are now #{students.count} registered students")
-  puts
+  if students.count == 1
+    puts
+    display_centered_text("There is now #{students.count} registered student")
+    puts
+  else
+    puts
+    display_centered_text("There are now #{students.count} registered students")
+    puts
+  end
 end
 
 def interactive_menu
@@ -175,6 +192,8 @@ def interactive_menu
         display_student_count(students)
       when "2"
         show_student_list(students)
+      when "3"
+        save_students(students)
       when "9"
         exit
       else
