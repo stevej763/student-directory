@@ -30,9 +30,9 @@ def save_students(students)
   file.close
 end
 
-def load_students
+def load_students(filename = "students.csv")
   students = []
-  file = File.open("students.csv", "r")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, age, height, cohort = line.chomp.split(",")
     students << {name: name, age: age.to_i, height: height.to_f, cohort: cohort.to_sym}
@@ -41,11 +41,26 @@ def load_students
   return students
 end
 
+def try_load_students
+  filename = ARGV.first
+  return if filename.nil?
+  if File.exists?(filename)
+    students = load_students(filename)
+    display_centered_text_with_symbol("", "*")
+    display_centered_text("Loaded #{students.count} from #{filename}")
+    display_centered_text_with_symbol("", "*")
+    return students
+  else
+    puts "Sorry, #{filename} doesn't exist."
+    exit
+  end
+end 
+
 def request_order_by_cohort
   display_centered_text("Order By Cohort?")
   puts "1. Yes"
   puts "2. No"
-  response = gets.chomp
+  response = STDIN.gets.chomp
   return response == "1" ? true : false
 end
 
@@ -53,7 +68,7 @@ def get_input(instruction)
   response = ""
   while response == ""
     print instruction
-    response = gets.chomp
+    response = STDIN.gets.chomp
   end
   return response
 end
@@ -70,13 +85,13 @@ end
 def get_filter
   letter = ""
   puts "Enter a letter to filter, otherwise press enter:"
-  letter = gets.strip
+  letter = STDIN.gets.chomp
   return letter.upcase
 end
 
 def get_max_length
   puts "Enter a maximum length for student names in the list:"
-  max_length = gets.chomp.to_i
+  max_length = STDIN.gets.chomp.to_i
   if max_length == "" ||  max_length == 0
     max_length = 99
   end
@@ -133,7 +148,10 @@ end
 def print_all_student_names_with_while_loop(students)
   student_index = 0
   while student_index < students.count
-    puts "#{student_index + 1}. #{students[student_index][:name]} age: #{students[student_index][:age]} height: #{students[student_index][:height]} (#{students[student_index][:cohort]} cohort)"
+    puts "#{student_index + 1}. #{students[student_index][:name]} 
+    age: #{students[student_index][:age]} 
+    height: #{students[student_index][:height]} 
+    cohort: #{students[student_index][:cohort]} cohort)"
     student_index += 1
   end
 end
@@ -190,12 +208,12 @@ def display_student_count(students)
   end
 end
 
-def interactive_menu
-  students = []
+def interactive_menu(students)
+  students = students
   display_intro
   loop do
     print_menu_options
-    selection = gets.chomp
+    selection = STDIN.gets.chomp
     case selection
       when "1"
         new_student = get_student_details
@@ -217,4 +235,5 @@ def interactive_menu
   return students
 end
 
-interactive_menu
+students = try_load_students
+interactive_menu(students)
