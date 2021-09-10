@@ -140,31 +140,41 @@ def print_footer(students)
   end
 end
 
+def print_menu_options
+  display_centered_text("Menu")
+  puts "1. Add new student"
+  puts "2. Show student list"
+  puts "9. Exit"
+end
+
+def show_student_list(students)
+  order_by_cohort = request_order_by_cohort
+  letter_filter = get_filter
+  max_length = get_max_length
+  print_header
+  print_student_names(order_by_cohort, max_length, letter_filter, students)
+  print_footer(students)
+end
+
+def display_student_count(students)
+  puts
+  display_centered_text("There are now #{students.count} registered students")
+  puts
+end
+
 def interactive_menu
   students = []
   display_intro
   loop do
-    display_centered_text("Menu")
-    puts "1. Add new student"
-    puts "2. Show student list"
-    puts "9. Exit"
-
+    print_menu_options
     selection = gets.chomp
     case selection
       when "1"
         new_student = get_student_details
         students << new_student
-        puts
-        display_centered_text("There are now #{students.count} registered students")
-        puts
+        display_student_count(students)
       when "2"
-        order_by_cohort = request_order_by_cohort
-        puts "order by cohort: #{order_by_cohort}"
-        letter_filter = get_filter
-        max_length = get_max_length
-        print_header
-        print_student_names(order_by_cohort, max_length, letter_filter, students)
-        print_footer(students)
+        show_student_list(students)
       when "9"
         exit
       else
